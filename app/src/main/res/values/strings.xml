@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HatGame</string>
+    <string name="new_game_button">НОВАЯ ИГРА</string>
+    <string name="load_game_button">ЗАГРУЗИТЬ</string>
+    <string name="guessed">Угадал!</string>
+    <string name="not_guessed">Не знаю</string>
+</resources>
