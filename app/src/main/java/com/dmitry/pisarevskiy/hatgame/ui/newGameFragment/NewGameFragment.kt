@@ -32,8 +32,7 @@ class NewGameFragment : Fragment() {
         val tvWord:TextView = view.findViewById(R.id.tv_word)
 
         viewModel = ViewModelProvider(this).get(NewGameViewModel::class.java)
-        viewModel.viewState().observe(this, Observer<NewGameViewState> {t-> t?.let {tvWord.text = it.game.currentWord.name}
-        })
+        viewModel.viewState().observe(this, Observer<NewGameViewState> {t-> t?.let {tvWord.text = it.game.currentWord.name}})
 
         btnGuessed.setOnClickListener {
             Repository.game.currentWord.isPlayed = true
