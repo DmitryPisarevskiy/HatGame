@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dmitry.pisarevskiy.hatgame.R
-import com.dmitry.pisarevskiy.hatgame.data.Repository
 import com.dmitry.pisarevskiy.hatgame.data.model.GameTypes
+import com.dmitry.pisarevskiy.hatgame.ui.resultsFragment.ResultsFragment
 
 const val GAME_FRAGMENT_TYPE_OF_GAME = "new or saved game?"
 
@@ -36,18 +36,25 @@ class GameFragment : Fragment() {
         val tvWord: TextView = view.findViewById(R.id.tv_word)
 
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-        if (gameType==GameTypes.NEW.type) {viewModel.changeGameModeToNew()}
+        if (gameType == GameTypes.NEW.type) {
+            viewModel.changeGameModeToNew()
+        }
         viewModel.viewState()
-            .observe(this, Observer<GameViewState> { t -> t?.let { tvWord.text = it.currentWord } })
+            .observe(this, Observer<GameViewState> { t ->
+                t?.let {
+                    tvWord.text = it.currentWord
+                    if (it.currentWord == "") fragmentManager?.beginTransaction()
+                        ?.replace(R.id.mainFrame, ResultsFragment.newInstance())
+                        ?.commitNow()
+                }
+            })
 
         btnGuessed.setOnClickListener {
             viewModel.nextWord(true)
-//            tvWord.text = viewModel.viewState().value!!.game.currentWord.name
         }
 
         btnNotGuessed.setOnClickListener {
             viewModel.nextWord(false)
-//            tvWord.text = viewModel.viewState().value!!.game.currentWord.name
         }
 
         return view
@@ -55,7 +62,7 @@ class GameFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(gameType:String) =
+        fun newInstance(gameType: String) =
             GameFragment().apply {
                 arguments = Bundle().apply {
                     putString(GAME_FRAGMENT_TYPE_OF_GAME, gameType)
