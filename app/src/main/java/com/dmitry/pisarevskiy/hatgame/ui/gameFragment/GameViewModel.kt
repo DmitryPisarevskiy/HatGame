@@ -9,9 +9,9 @@ import com.dmitry.pisarevskiy.hatgame.data.model.GameTypes
 
 const val NUM_OF_WORDS_IN_NEW_GAME = 7
 
-class GameViewModel () : ViewModel() {
+class GameViewModel : ViewModel() {
     private val viewStateLiveData: MutableLiveData<GameViewState> = MutableLiveData()
-    private var gameType:GameTypes = GameTypes.SAVED
+    private var gameType: GameTypes = GameTypes.SAVED
 
     init {
         Repository.currentGame = Repository.savedGame
@@ -20,10 +20,8 @@ class GameViewModel () : ViewModel() {
 
     fun viewState(): LiveData<GameViewState> = viewStateLiveData
 
-    fun nextWord(isGuessed:Boolean) {
-        Repository.currentGame.currentWord.isPlayed = true
-        Repository.currentGame.currentWord.isGuessed = isGuessed
-        Repository.currentGame.nextWord()
+    fun nextWord(isGuessed: Boolean) {
+        Repository.currentGame.nextWord(true)
         viewStateLiveData.value = GameViewState(Repository.currentGame.currentWord.name)
     }
 

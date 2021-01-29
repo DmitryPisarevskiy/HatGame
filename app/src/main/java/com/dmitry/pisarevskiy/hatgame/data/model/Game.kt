@@ -5,6 +5,10 @@ import kotlin.collections.ArrayList
 
 class Game(val id: String, var list: MutableList<Word>) {
     var currentWord: Word = list[(Math.random() * list.size).toInt()]
+    var gameIsFinished: Boolean = false
+    var playedWords: Int = 0
+    var notPlayedWords: Int = list.size
+    var guessedWords: Int = 0
 
     constructor(id: String, list: MutableList<Word>, numOfWords: Int) : this(id, list) {
         val listCopy: MutableList<Word> = LinkedList(list)
@@ -16,18 +20,26 @@ class Game(val id: String, var list: MutableList<Word>) {
             list.add(listCopy[index])
             listCopy.removeAt(index)
         }
+        notPlayedWords = list.size
     }
 
-    fun nextWord() {
-        val listOfUnplayedWords: MutableList<Word> = ArrayList()
-        for (i in list.indices) {
-            if (!list[i].isPlayed) {
-                listOfUnplayedWords.add(list[i])
-            }
+    fun nextWord(currentWordIsGuessed: Boolean) {
+        currentWord.isPlayed = true
+        notPlayedWords--
+        playedWords++
+        if (currentWordIsGuessed) {
+            currentWord.isGuessed = true
+            guessedWords++
         }
-        return if (list.isEmpty()) {
-            currentWord = Word("", false, Categories.MORE_THEN_18)
-        } else {
+
+        if (notPlayedWords ==0) {
+            gameIsFinished = true
+            val listOfUnplayedWords: MutableList<Word> = ArrayList()
+            for (i in list.indices) {
+                if (!list[i].isPlayed) {
+                    listOfUnplayedWords.add(list[i])
+                }
+            }
             currentWord = listOfUnplayedWords[(Math.random() * listOfUnplayedWords.size).toInt()]
         }
     }
