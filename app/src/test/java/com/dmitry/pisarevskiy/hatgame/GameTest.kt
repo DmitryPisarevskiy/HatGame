@@ -2,7 +2,7 @@ package com.dmitry.pisarevskiy.hatgame
 
 import com.dmitry.pisarevskiy.hatgame.data.Repository
 import com.dmitry.pisarevskiy.hatgame.data.model.Game
-import com.dmitry.pisarevskiy.hatgame.data.model.Word
+import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.NUM_OF_WORDS_IN_NEW_GAME
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -20,29 +20,20 @@ class GameTest {
 
     @Test
     fun unplayedWordChoice() {
-        var game = Repository.savedGame
-        lateinit var word: Word
-        for (i in game.list-1) {
-            game.nextWord()
-            word = game.currentWord
-            word = game.currentWord
-            word.isPlayed = true
-            println(word.name)
+        val game = Repository.savedGame
+        while (!game.isOver) {
+            println(game.currentWord.name)
+            game.nextWord(true)
         }
         assertEquals(1,1)
     }
 
     @Test
     fun newGameCreation() {
-        Repository.currentGame = Game("1",Repository.words, 7)
-        var game = Repository.currentGame
-        lateinit var word: Word
-        for (i in game.list-1) {
-            game.nextWord()
-            word = game.currentWord
-            word = game.currentWord
-            word.isPlayed = true
-            println(word.name)
+        val game = Game("1",Repository.words, NUM_OF_WORDS_IN_NEW_GAME)
+        while (!game.isOver) {
+            println(game.currentWord.name)
+            game.nextWord(true)
         }
         assertEquals(1,1)
     }

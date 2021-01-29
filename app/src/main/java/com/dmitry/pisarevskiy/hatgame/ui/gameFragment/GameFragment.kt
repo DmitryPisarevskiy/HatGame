@@ -43,7 +43,7 @@ class GameFragment : Fragment() {
             .observe(this, Observer<GameViewState> { t ->
                 t?.let {
                     tvWord.text = it.currentWord
-                    if (it.currentWord == "") fragmentManager?.beginTransaction()
+                    if (it.gameIsOver) fragmentManager?.beginTransaction()
                         ?.replace(R.id.mainFrame, ResultsFragment.newInstance())
                         ?.commitNow()
                 }

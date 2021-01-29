@@ -5,7 +5,7 @@ import kotlin.collections.ArrayList
 
 class Game(val id: String, var list: MutableList<Word>) {
     var currentWord: Word = list[(Math.random() * list.size).toInt()]
-    var gameIsFinished: Boolean = false
+    var isOver: Boolean = false
     var playedWords: Int = 0
     var notPlayedWords: Int = list.size
     var guessedWords: Int = 0
@@ -32,8 +32,9 @@ class Game(val id: String, var list: MutableList<Word>) {
             guessedWords++
         }
 
-        if (notPlayedWords ==0) {
-            gameIsFinished = true
+        if (notPlayedWords == 0) {
+            isOver = true
+        } else {
             val listOfUnplayedWords: MutableList<Word> = ArrayList()
             for (i in list.indices) {
                 if (!list[i].isPlayed) {

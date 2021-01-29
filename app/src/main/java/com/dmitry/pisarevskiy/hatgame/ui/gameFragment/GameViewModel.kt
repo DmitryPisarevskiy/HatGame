@@ -22,7 +22,14 @@ class GameViewModel : ViewModel() {
 
     fun nextWord(isGuessed: Boolean) {
         Repository.currentGame.nextWord(true)
-        viewStateLiveData.value = GameViewState(Repository.currentGame.currentWord.name)
+        if (!Repository.currentGame.isOver) {
+            viewStateLiveData.value = GameViewState(Repository.currentGame.currentWord.name)
+        } else {
+            viewStateLiveData.value = GameViewState(
+                Repository.currentGame.currentWord.name,
+                Repository.currentGame.isOver
+            )
+        }
     }
 
     fun changeGameModeToNew() {
