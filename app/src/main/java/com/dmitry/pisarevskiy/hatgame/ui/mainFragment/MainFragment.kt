@@ -1,14 +1,24 @@
 package com.dmitry.pisarevskiy.hatgame.ui.mainFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import com.dmitry.pisarevskiy.hatgame.R
+import com.dmitry.pisarevskiy.hatgame.data.Repository
+import com.dmitry.pisarevskiy.hatgame.data.WordResult
 import com.dmitry.pisarevskiy.hatgame.data.model.GameType
 import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.GameFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+
 
 class MainFragment : Fragment() {
 
@@ -30,7 +40,6 @@ class MainFragment : Fragment() {
                 ?.replace(R.id.mainFrame, GameFragment.newInstance(GameType.NEW.type))
                 ?.commitNow()
         }
-
         return view
     }
 

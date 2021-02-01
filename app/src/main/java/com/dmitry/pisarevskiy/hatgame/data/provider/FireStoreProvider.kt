@@ -4,18 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dmitry.pisarevskiy.hatgame.data.WordResult
+import com.dmitry.pisarevskiy.hatgame.data.model.GameType
 import com.dmitry.pisarevskiy.hatgame.data.model.Word
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.*
 import java.lang.Exception
 
-private const val WORDS_COLLECTION = "words"
-
 class FireStoreProvider : RemoteDataProvider {
     private val TAG = "${FireStoreProvider::class.java.simpleName} :"
     private val db = FirebaseFirestore.getInstance()
-    private val wordsRef = db.collection(WORDS_COLLECTION)
+    private val wordsRef = db.collection(GameType.SAVED.type)
 
     override fun subscribeToAllWords(): LiveData<WordResult> {
         val result = MutableLiveData<WordResult>()
