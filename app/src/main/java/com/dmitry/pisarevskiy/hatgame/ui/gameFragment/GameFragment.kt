@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dmitry.pisarevskiy.hatgame.R
-import com.dmitry.pisarevskiy.hatgame.data.model.GameTypes
+import com.dmitry.pisarevskiy.hatgame.data.model.GameType
 import com.dmitry.pisarevskiy.hatgame.ui.resultsFragment.ResultsFragment
 
 const val GAME_FRAGMENT_TYPE_OF_GAME = "new or saved game?"
@@ -36,7 +36,7 @@ class GameFragment : Fragment() {
         val tvWord: TextView = view.findViewById(R.id.tv_word)
 
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-        if (gameType == GameTypes.NEW.type) {
+        if (gameType == GameType.NEW.type) {
             viewModel.changeGameModeToNew()
         }
         viewModel.viewState()

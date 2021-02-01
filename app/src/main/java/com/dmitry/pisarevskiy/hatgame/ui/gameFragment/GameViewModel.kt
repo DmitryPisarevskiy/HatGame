@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dmitry.pisarevskiy.hatgame.data.Repository
 import com.dmitry.pisarevskiy.hatgame.data.model.Game
-import com.dmitry.pisarevskiy.hatgame.data.model.GameTypes
+import com.dmitry.pisarevskiy.hatgame.data.model.GameType
 
 const val NUM_OF_WORDS_IN_NEW_GAME = 7
 
 class GameViewModel : ViewModel() {
     private val viewStateLiveData: MutableLiveData<GameViewState> = MutableLiveData()
-    private var gameType: GameTypes = GameTypes.SAVED
+    private var gameType: GameType = GameType.SAVED
 
     init {
         Repository.currentGame = Repository.savedGame
@@ -21,7 +21,7 @@ class GameViewModel : ViewModel() {
     fun viewState(): LiveData<GameViewState> = viewStateLiveData
 
     fun nextWord(isGuessed: Boolean) {
-        Repository.currentGame.nextWord(true)
+        Repository.currentGame.nextWord(isGuessed)
         if (!Repository.currentGame.isOver) {
             viewStateLiveData.value = GameViewState(Repository.currentGame.currentWord.name)
         } else {
@@ -33,7 +33,7 @@ class GameViewModel : ViewModel() {
     }
 
     fun changeGameModeToNew() {
-        gameType = GameTypes.NEW
+        gameType = GameType.NEW
         Repository.currentGame = Game("1", Repository.words, NUM_OF_WORDS_IN_NEW_GAME)
         viewStateLiveData.value = GameViewState(Repository.currentGame.currentWord.name)
     }

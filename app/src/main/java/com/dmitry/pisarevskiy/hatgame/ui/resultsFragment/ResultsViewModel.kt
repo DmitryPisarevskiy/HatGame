@@ -12,7 +12,7 @@ class ResultsViewModel : ViewModel() {
 
     fun getResults() {
         Repository.apply {
-            viewStateLiveData.value = ResultsViewState(currentGame.playedWords, currentGame.guessedWords)
+            viewStateLiveData.value = ResultsViewState(currentGame.numOfPlayedWords, currentGame.guessedWords)
         }
     }
 

@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.dmitry.pisarevskiy.hatgame.R
-import com.dmitry.pisarevskiy.hatgame.data.model.GameTypes
-import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.GAME_FRAGMENT_TYPE_OF_GAME
+import com.dmitry.pisarevskiy.hatgame.data.model.GameType
 import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.GameFragment
 
 class MainFragment : Fragment() {
@@ -23,12 +22,12 @@ class MainFragment : Fragment() {
 
         btnLoadGame.setOnClickListener {
             fragmentManager?.beginTransaction()
-                ?.replace(R.id.mainFrame, GameFragment.newInstance(GameTypes.SAVED.type))
+                ?.replace(R.id.mainFrame, GameFragment.newInstance(GameType.SAVED.type))
                 ?.commitNow()
         }
         btnNewGame.setOnClickListener {
             fragmentManager?.beginTransaction()
-                ?.replace(R.id.mainFrame, GameFragment.newInstance(GameTypes.NEW.type))
+                ?.replace(R.id.mainFrame, GameFragment.newInstance(GameType.NEW.type))
                 ?.commitNow()
         }
 
