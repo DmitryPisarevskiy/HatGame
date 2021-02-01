@@ -24,7 +24,6 @@ class GameViewModel(val repository: Repository = Repository) : BaseViewModel<Gam
     }
 
 //    fun viewState(): LiveData<GameViewState> = viewStateLiveData
-
     fun nextWord(isGuessed: Boolean) {
         repository.currentGame.nextWord(isGuessed)
         if (!repository.currentGame.isOver) {
