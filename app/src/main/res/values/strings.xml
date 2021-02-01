@@ -4,4 +4,7 @@
     <string name="load_game_button">ЗАГРУЗИТЬ</string>
     <string name="guessed">Угадал!</string>
     <string name="not_guessed">Не знаю</string>
+    <string name="results">RESULTS</string>
+    <string name="ok">OK</string>
+    <string name="number_of_guessed_words_is">Количество угаданных слов - </string>
 </resources>
