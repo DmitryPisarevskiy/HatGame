@@ -8,5 +8,4 @@ open class BaseViewModel<S>: ViewModel() {
     open val viewStateLiveData = MutableLiveData<S>()
 
     open fun viewState(): LiveData<S> = viewStateLiveData
-
 }
