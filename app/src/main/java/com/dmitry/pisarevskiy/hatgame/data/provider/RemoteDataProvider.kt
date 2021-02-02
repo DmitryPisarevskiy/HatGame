@@ -6,6 +6,7 @@ import com.dmitry.pisarevskiy.hatgame.data.model.Word
 
 interface RemoteDataProvider {
     fun subscribeToAllWords(): LiveData<WordResult>
-    fun getWordByName(name:String) : LiveData<WordResult>
-    fun saveWord(word: Word):LiveData<WordResult>
+    fun subscribeToSavedGame(gameID: String): LiveData<WordResult>
+    fun getWordByName(gameID: String, name:String) : LiveData<WordResult>
+    fun saveWord(gameID: String, word: Word):LiveData<WordResult>
 }

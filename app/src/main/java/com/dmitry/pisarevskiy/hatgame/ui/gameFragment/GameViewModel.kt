@@ -38,7 +38,7 @@ class GameViewModel(val repository: Repository = Repository) : BaseViewModel<Gam
 
     fun changeGameModeToNew() {
         gameType = GameType.NEW
-        repository.currentGame = Game("1", repository.words, NUM_OF_WORDS_IN_NEW_GAME)
+        repository.currentGame = repository.newGame
         viewStateLiveData.value = GameViewState(repository.currentGame.currentWord.name)
     }
 }
