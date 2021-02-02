@@ -1,19 +1,12 @@
 package com.dmitry.pisarevskiy.hatgame.ui.resultsFragment
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.dmitry.pisarevskiy.hatgame.data.Repository
+import com.dmitry.pisarevskiy.hatgame.ui.base.BaseViewModel
 
-class ResultsViewModel : ViewModel() {
-    private val viewStateLiveData: MutableLiveData<ResultsViewState> = MutableLiveData()
-
-    fun viewState(): LiveData<ResultsViewState> = viewStateLiveData
-
+class ResultsViewModel : BaseViewModel<ResultsViewState>() {
     fun getResults() {
         Repository.apply {
             viewStateLiveData.value = ResultsViewState(currentGame.numOfPlayedWords, currentGame.guessedWords)
         }
     }
-
 }

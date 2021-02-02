@@ -10,12 +10,9 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dmitry.pisarevskiy.hatgame.R
-import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.GameFragment
 import com.dmitry.pisarevskiy.hatgame.ui.mainFragment.MainFragment
 
 class ResultsFragment : Fragment() {
-    private var numOfWords: Int = 0
-    private var numOfGuessedWords: Int = 0
     private lateinit var viewModel: ResultsViewModel
 
     override fun onCreateView(
@@ -46,6 +43,6 @@ class ResultsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = GameFragment()
+        fun newInstance() = ResultsFragment()
     }
 }

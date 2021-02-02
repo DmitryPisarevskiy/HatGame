@@ -1,26 +1,20 @@
 package com.dmitry.pisarevskiy.hatgame.ui.mainFragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.dmitry.pisarevskiy.hatgame.R
-import com.dmitry.pisarevskiy.hatgame.data.Repository
-import com.dmitry.pisarevskiy.hatgame.data.WordResult
 import com.dmitry.pisarevskiy.hatgame.data.model.GameType
 import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.GameFragment
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
-
 
 class MainFragment : Fragment() {
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +34,7 @@ class MainFragment : Fragment() {
                 ?.replace(R.id.mainFrame, GameFragment.newInstance(GameType.NEW.type))
                 ?.commitNow()
         }
+
         return view
     }
 
@@ -51,4 +46,5 @@ class MainFragment : Fragment() {
                 }
             }
     }
+
 }

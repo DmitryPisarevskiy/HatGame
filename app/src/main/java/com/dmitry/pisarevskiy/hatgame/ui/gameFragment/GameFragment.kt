@@ -17,7 +17,9 @@ const val GAME_FRAGMENT_TYPE_OF_GAME = "new or saved game?"
 
 class GameFragment : Fragment() {
     private lateinit var gameType: String
-    private lateinit var viewModel: GameViewModel
+    private  val viewModel: GameViewModel by lazy {
+        ViewModelProvider(this).get(GameViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +37,16 @@ class GameFragment : Fragment() {
         val btnNotGuessed: Button = view.findViewById(R.id.btn_not_guessed)
         val tvWord: TextView = view.findViewById(R.id.tv_word)
 
-        viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
         if (gameType == GameType.NEW.type) {
             viewModel.changeGameModeToNew()
         }
         viewModel.viewState()
             .observe(this, Observer<GameViewState> { t ->
                 t?.let {
-                    tvWord.text = it.currentWord
                     if (it.gameIsOver) fragmentManager?.beginTransaction()
                         ?.replace(R.id.mainFrame, ResultsFragment.newInstance())
                         ?.commitNow()
+                    tvWord.text = it.currentWord
                 }
             })
 
