@@ -1,25 +1,25 @@
 package com.dmitry.pisarevskiy.hatgame.ui.gameFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dmitry.pisarevskiy.hatgame.R
 import com.dmitry.pisarevskiy.hatgame.data.model.GameType
+import com.dmitry.pisarevskiy.hatgame.ui.base.BaseFragment
 import com.dmitry.pisarevskiy.hatgame.ui.resultsFragment.ResultsFragment
 
 const val GAME_FRAGMENT_TYPE_OF_GAME = "new or saved game?"
 
-class GameFragment : Fragment() {
+class GameFragment : BaseFragment<GameViewState>() {
     private lateinit var gameType: String
-    private  val viewModel: GameViewModel by lazy {
+    override  val viewModel: GameViewModel by lazy {
         ViewModelProvider(this).get(GameViewModel::class.java)
     }
+    private lateinit var tvWord: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,20 +35,11 @@ class GameFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_game, container, false)
         val btnGuessed: Button = view.findViewById(R.id.btn_guessed)
         val btnNotGuessed: Button = view.findViewById(R.id.btn_not_guessed)
-        val tvWord: TextView = view.findViewById(R.id.tv_word)
+        tvWord = view.findViewById(R.id.tv_word)
 
         if (gameType == GameType.NEW.type) {
             viewModel.changeGameModeToNew()
         }
-        viewModel.viewState()
-            .observe(this, Observer<GameViewState> { t ->
-                t?.let {
-                    if (it.gameIsOver) fragmentManager?.beginTransaction()
-                        ?.replace(R.id.mainFrame, ResultsFragment.newInstance())
-                        ?.commitNow()
-                    tvWord.text = it.currentWord
-                }
-            })
 
         btnGuessed.setOnClickListener {
             viewModel.nextWord(true)
@@ -69,5 +60,12 @@ class GameFragment : Fragment() {
                     putString(GAME_FRAGMENT_TYPE_OF_GAME, gameType)
                 }
             }
+    }
+
+    override fun renderData(state: GameViewState) {
+        if (state.gameIsOver) fragmentManager?.beginTransaction()
+            ?.replace(R.id.mainFrame, ResultsFragment.newInstance())
+            ?.commitNow()
+        tvWord.text = state.currentWord
     }
 }

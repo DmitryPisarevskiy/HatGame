@@ -13,8 +13,8 @@ import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.NUM_OF_WORDS_IN_NEW_GAME
 
 object Repository {
     lateinit var currentGame: Game
-    var newGame: Game
-    var savedGame: Game
+    lateinit var newGame: Game
+    lateinit var savedGame: Game
     private val remoteProvider: RemoteDataProvider = FireStoreProvider()
 
     var extraSavedGame = Game(

@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dmitry.pisarevskiy.hatgame.R
 import com.dmitry.pisarevskiy.hatgame.data.model.GameType
+import com.dmitry.pisarevskiy.hatgame.ui.base.BaseFragment
 import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.GameFragment
 
-class MainFragment : Fragment() {
-    private val viewModel: MainViewModel by lazy {
+class MainFragment : BaseFragment<MainViewState>() {
+    override val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
@@ -40,11 +40,9 @@ class MainFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+        fun newInstance() = MainFragment()
     }
 
+    override fun renderData(state: MainViewState) {
+    }
 }
