@@ -15,73 +15,57 @@ class FireStoreProvider : RemoteDataProvider {
     private val TAG = "${FireStoreProvider::class.java.simpleName} :"
     private val db = FirebaseFirestore.getInstance()
 
-    override fun subscribeToAllWords(): LiveData<WordResult> {
-        val result = MutableLiveData<WordResult>()
+    override fun subscribeToAllWords(): LiveData<WordResult> = MutableLiveData<WordResult>().apply {
         val wordsRef = db.collection(GameType.NEW.type)
-        wordsRef.addSnapshotListener(object : EventListener<QuerySnapshot> {
-            override fun onEvent(snapshot: QuerySnapshot?, error: FirebaseFirestoreException?) {
-                if (error != null) {
-                    result.value = WordResult.Error(error)
-                } else if (snapshot != null) {
-                    val words = mutableListOf<Word>()
-                    for (doc:QueryDocumentSnapshot in snapshot) {
-                        words.add(doc.toObject(Word::class.java))
+        wordsRef.addSnapshotListener { snapshot, error ->
+            value = error?.let { WordResult.Error(it) }
+                ?: snapshot?.let {
+                    val words = it.documents.map { docSnapshot ->
+                        docSnapshot.toObject(Word::class.java)
                     }
-                    result.value = WordResult.Success(words)
+                    WordResult.Success(words)
                 }
-            }
-        })
-        return result
+        }
     }
 
-    override fun subscribeToSavedGame(gameID: String): LiveData<WordResult> {
-        val result = MutableLiveData<WordResult>()
-        val wordsRef = db.collection(gameID)
-
-        wordsRef.addSnapshotListener(object : EventListener<QuerySnapshot> {
-            override fun onEvent(snapshot: QuerySnapshot?, error: FirebaseFirestoreException?) {
-                if (error != null) {
-                    result.value = WordResult.Error(error)
-                } else if (snapshot != null) {
-                    val words = mutableListOf<Word>()
-                    for (doc:QueryDocumentSnapshot in snapshot) {
-                        words.add(doc.toObject(Word::class.java))
+    override fun subscribeToSavedGame(gameID: String): LiveData<WordResult> =
+        MutableLiveData<WordResult>().apply {
+            val wordsRef = db.collection(gameID)
+            wordsRef.addSnapshotListener { snapshot, error ->
+                value = error?.let { WordResult.Error(it) }
+                    ?: snapshot?.let {
+                        val words = it.documents.map { docSnapshot ->
+                            docSnapshot.toObject(Word::class.java)
+                        }
+                        WordResult.Success(words)
                     }
-                    result.value = WordResult.Success(words)
+            }
+        }
+
+    override fun getWordByName(gameID: String, name: String): LiveData<WordResult> =
+        MutableLiveData<WordResult>().apply {
+            val wordsRef = db.collection(gameID)
+            wordsRef.document(name).get()
+                .addOnSuccessListener { snapshot ->
+                    value = WordResult.Success(snapshot.toObject(Word::class.java))
+                }.addOnFailureListener { exception ->
+                    value = WordResult.Error(exception)
                 }
-            }
-        })
-        return result
-    }
+        }
 
-    override fun getWordByName(gameID: String, name:String): LiveData<WordResult> {
-        val result = MutableLiveData<WordResult>()
-        val wordsRef = db.collection(gameID)
-
-        wordsRef.document(name).get()
-            .addOnSuccessListener { snapshot ->
-                result.value = WordResult.Success(snapshot.toObject(Word::class.java))
-            }.addOnFailureListener { exception ->
-                result.value = WordResult.Error(exception)
-            }
-        return result
-    }
-
-    override fun saveWord(gameID: String, word: Word): LiveData<WordResult> {
-        val result = MutableLiveData<WordResult>()
-        val wordsRef = db.collection(gameID)
-
-        wordsRef.document(word.name)
-            .set(word).addOnSuccessListener {
-                Log.d(TAG, "Word $word is saved")
-                result.value = WordResult.Success(word)
-            }
-            .addOnFailureListener { p0 ->
-                Log.d(TAG, "Error saving note $word, message: ${p0.message}")
-                result.value = WordResult.Error(p0)
-            }
-        return result
-    }
+    override fun saveWord(gameID: String, word: Word): LiveData<WordResult> =
+        MutableLiveData<WordResult>().apply {
+            val wordsRef = db.collection(gameID)
+            wordsRef.document(word.name)
+                .set(word).addOnSuccessListener {
+                    Log.d(TAG, "Word $word is saved")
+                    value = WordResult.Success(word)
+                }
+                .addOnFailureListener { p0 ->
+                    Log.d(TAG, "Error saving note $word, message: ${p0.message}")
+                    value = WordResult.Error(p0)
+                }
+        }
 
 
 }

@@ -7,4 +7,5 @@
     <string name="results">RESULTS</string>
     <string name="ok">OK</string>
     <string name="number_of_guessed_words_is">Количество угаданных слов - </string>
+    <string name="game_results">Количество угаданных слов - %d из %d</string>
 </resources>

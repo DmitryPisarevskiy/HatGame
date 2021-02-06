@@ -12,7 +12,7 @@ import com.dmitry.pisarevskiy.hatgame.ui.base.BaseFragment
 import com.dmitry.pisarevskiy.hatgame.ui.mainFragment.MainFragment
 
 class ResultsFragment : BaseFragment<ResultsViewState>() {
-    override val viewModel: ResultsViewModel by lazy {ViewModelProvider(this).get(ResultsViewModel::class.java)}
+    override val viewModel: ResultsViewModel by lazy { ViewModelProvider(this).get(ResultsViewModel::class.java) }
     private lateinit var tvResults: TextView
 
     override fun onCreateView(
@@ -36,7 +36,6 @@ class ResultsFragment : BaseFragment<ResultsViewState>() {
     }
 
     override fun renderData(state: ResultsViewState) {
-        tvResults.text =
-            "${getString(R.string.number_of_guessed_words_is)}${state.guessedWords} из ${state.playedWords}"
+        tvResults.text = getString(R.string.game_results, state.guessedWords, state.playedWords)
     }
 }
