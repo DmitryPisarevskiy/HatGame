@@ -1,40 +1,34 @@
 package com.dmitry.pisarevskiy.hatgame.ui.gameFragment
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.dmitry.pisarevskiy.hatgame.data.Repository
-import com.dmitry.pisarevskiy.hatgame.data.model.Game
-import com.dmitry.pisarevskiy.hatgame.data.model.GameTypes
+import com.dmitry.pisarevskiy.hatgame.data.model.GameType
+import com.dmitry.pisarevskiy.hatgame.ui.base.BaseViewModel
 
 const val NUM_OF_WORDS_IN_NEW_GAME = 7
 
-class GameViewModel : ViewModel() {
-    private val viewStateLiveData: MutableLiveData<GameViewState> = MutableLiveData()
-    private var gameType: GameTypes = GameTypes.SAVED
+class GameViewModel(val repository: Repository = Repository) : BaseViewModel<GameViewState>() {
+    private var gameType: GameType = GameType.SAVED
 
     init {
-        Repository.currentGame = Repository.savedGame
-        viewStateLiveData.value = GameViewState(Repository.currentGame.currentWord.name)
+        repository.currentGame = repository.savedGame
+        viewStateLiveData.value = GameViewState(repository.currentGame.currentWord.name)
     }
 
-    fun viewState(): LiveData<GameViewState> = viewStateLiveData
-
     fun nextWord(isGuessed: Boolean) {
-        Repository.currentGame.nextWord(true)
-        if (!Repository.currentGame.isOver) {
-            viewStateLiveData.value = GameViewState(Repository.currentGame.currentWord.name)
+        repository.currentGame.nextWord(isGuessed)
+        if (!repository.currentGame.isOver) {
+            viewStateLiveData.value = GameViewState(repository.currentGame.currentWord.name)
         } else {
             viewStateLiveData.value = GameViewState(
-                Repository.currentGame.currentWord.name,
-                Repository.currentGame.isOver
+                repository.currentGame.currentWord.name,
+                repository.currentGame.isOver
             )
         }
     }
 
     fun changeGameModeToNew() {
-        gameType = GameTypes.NEW
-        Repository.currentGame = Game("1", Repository.words, NUM_OF_WORDS_IN_NEW_GAME)
-        viewStateLiveData.value = GameViewState(Repository.currentGame.currentWord.name)
+        gameType = GameType.NEW
+        repository.currentGame = repository.newGame
+        viewStateLiveData.value = GameViewState(repository.currentGame.currentWord.name)
     }
 }

@@ -1,11 +1,5 @@
 package com.dmitry.pisarevskiy.hatgame.ui.mainFragment
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.dmitry.pisarevskiy.hatgame.ui.base.BaseViewModel
 
-class MainViewModel : ViewModel() {
-    private val viewStateLiveData: MutableLiveData<MainViewState> = MutableLiveData()
-
-    fun viewState(): LiveData<MainViewState> = viewStateLiveData
-}
+class MainViewModel : BaseViewModel<MainViewState>()

@@ -1,3 +1,5 @@
 package com.dmitry.pisarevskiy.hatgame.ui.mainFragment
 
-class MainViewState
+import com.dmitry.pisarevskiy.hatgame.ui.base.BaseViewState
+
+class MainViewState: BaseViewState

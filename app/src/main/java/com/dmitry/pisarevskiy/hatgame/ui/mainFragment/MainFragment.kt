@@ -1,17 +1,20 @@
 package com.dmitry.pisarevskiy.hatgame.ui.mainFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.ViewModelProvider
 import com.dmitry.pisarevskiy.hatgame.R
-import com.dmitry.pisarevskiy.hatgame.data.model.GameTypes
-import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.GAME_FRAGMENT_TYPE_OF_GAME
+import com.dmitry.pisarevskiy.hatgame.data.model.GameType
+import com.dmitry.pisarevskiy.hatgame.ui.base.BaseFragment
 import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.GameFragment
 
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment<MainViewState>() {
+    override val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,12 +26,12 @@ class MainFragment : Fragment() {
 
         btnLoadGame.setOnClickListener {
             fragmentManager?.beginTransaction()
-                ?.replace(R.id.mainFrame, GameFragment.newInstance(GameTypes.SAVED.type))
+                ?.replace(R.id.mainFrame, GameFragment.newInstance(GameType.SAVED.type))
                 ?.commitNow()
         }
         btnNewGame.setOnClickListener {
             fragmentManager?.beginTransaction()
-                ?.replace(R.id.mainFrame, GameFragment.newInstance(GameTypes.NEW.type))
+                ?.replace(R.id.mainFrame, GameFragment.newInstance(GameType.NEW.type))
                 ?.commitNow()
         }
 
@@ -37,10 +40,9 @@ class MainFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+        fun newInstance() = MainFragment()
+    }
+
+    override fun renderData(state: MainViewState) {
     }
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "403695611643",
+    "project_id": "hat-game-be256",
+    "storage_bucket": "hat-game-be256.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403695611643:android:f7d291fb14404611180a5e",
+        "android_client_info": {
+          "package_name": "com.dmitry.pisarevskiy.hatgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403695611643-amfv7jhu2ikdavv4q01fj0uf8uvpmkej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLBA9T3EIEzYeMCpnidLhUC4jWvSMI3go"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403695611643-amfv7jhu2ikdavv4q01fj0uf8uvpmkej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
