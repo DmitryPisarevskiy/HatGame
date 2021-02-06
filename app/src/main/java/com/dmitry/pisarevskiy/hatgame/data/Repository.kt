@@ -106,4 +106,6 @@ object Repository {
 
     fun getWordByName(gameID: String, name: String): LiveData<WordResult> =
         remoteProvider.getWordByName(gameID, name)
+
+    fun getCurrentUser() = remoteProvider.getCurrentUser()
 }
