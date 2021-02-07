@@ -10,12 +10,13 @@ abstract class BaseFragment<S : BaseViewState> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.viewState()
-            .observe(this, { t ->
+            .observe(this) { t ->
                 t?.let {
                     renderData(t)
                 }
-            })
+            }
     }
 
     abstract fun renderData(state: S)
+
 }
