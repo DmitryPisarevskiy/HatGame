@@ -13,8 +13,8 @@ import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.NUM_OF_WORDS_IN_NEW_GAME
 
 object Repository {
     lateinit var currentGame: Game
-    lateinit var newGame: Game
-    lateinit var savedGame: Game
+    var newGame: Game
+    var savedGame: Game
     private val remoteProvider: RemoteDataProvider = FireStoreProvider()
 
     var extraSavedGame = Game(
@@ -84,8 +84,7 @@ object Repository {
                     numOfWords = NUM_OF_WORDS_IN_NEW_GAME
                 )
             }
-            is Error -> {
-            }
+            is Error -> { }
         }
         when (savedGameLiveData.value) {
             is Success<*> -> {
@@ -94,8 +93,7 @@ object Repository {
                     list = (newGameLiveData.value as WordResult.Success<*>).data as MutableList<Word>,
                 )
             }
-            is Error -> {
-            }
+            is Error -> { }
         }
     }
 
@@ -108,4 +106,6 @@ object Repository {
 
     fun getWordByName(gameID: String, name: String): LiveData<WordResult> =
         remoteProvider.getWordByName(gameID, name)
+
+    fun getCurrentUser() = remoteProvider.getCurrentUser()
 }
