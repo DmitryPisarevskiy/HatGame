@@ -1,21 +1,28 @@
 package com.dmitry.pisarevskiy.hatgame.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.dmitry.pisarevskiy.hatgame.data.model.Category
 import com.dmitry.pisarevskiy.hatgame.data.model.Game
 import com.dmitry.pisarevskiy.hatgame.data.model.GameType
 import com.dmitry.pisarevskiy.hatgame.data.model.Word
-import com.dmitry.pisarevskiy.hatgame.data.WordResult.Success
-import com.dmitry.pisarevskiy.hatgame.data.WordResult.Error
 import com.dmitry.pisarevskiy.hatgame.data.provider.FireStoreProvider
 import com.dmitry.pisarevskiy.hatgame.data.provider.RemoteDataProvider
+import com.dmitry.pisarevskiy.hatgame.data.provider.SimpleProvider
 import com.dmitry.pisarevskiy.hatgame.ui.gameFragment.NUM_OF_WORDS_IN_NEW_GAME
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+
+const val NEW_GAME_ID = "NEW"
 
 object Repository {
-    lateinit var currentGame: Game
-    var newGame: Game
-    var savedGame: Game
+    var currentGame: Game? = null
+    val gameLiveData = MutableLiveData<Game>()
+    var gameIsReady: Boolean = false
     private val remoteProvider: RemoteDataProvider = FireStoreProvider()
+    private val simpleProvider: SimpleProvider = SimpleProvider()
 
     var extraSavedGame = Game(
         GameType.SAVED.type, mutableListOf(
@@ -67,37 +74,7 @@ object Repository {
         Word("Рекорд", Category.SPORT),
     )
 
-    init {
-        newGame = Game(
-            id = GameType.NEW.type,
-            list = words,
-            numOfWords = NUM_OF_WORDS_IN_NEW_GAME
-        )
-        savedGame = extraSavedGame
-        val newGameLiveData: LiveData<WordResult> = getAllWords()
-        val savedGameLiveData: LiveData<WordResult> = getSavedGame()
-        when (newGameLiveData.value) {
-            is Success<*> -> {
-                newGame = Game(
-                    id = GameType.NEW.type,
-                    list = (newGameLiveData.value as WordResult.Success<*>).data as MutableList<Word>,
-                    numOfWords = NUM_OF_WORDS_IN_NEW_GAME
-                )
-            }
-            is Error -> { }
-        }
-        when (savedGameLiveData.value) {
-            is Success<*> -> {
-                savedGame = Game(
-                    id = GameType.SAVED.type,
-                    list = (newGameLiveData.value as WordResult.Success<*>).data as MutableList<Word>,
-                )
-            }
-            is Error -> { }
-        }
-    }
-
-    fun getAllWords(): LiveData<WordResult> = remoteProvider.subscribeToAllWords()
+    fun getAllWords(): MutableList<Word> = simpleProvider.subscribeToAllWords()
     fun getSavedGame(): LiveData<WordResult> =
         remoteProvider.subscribeToSavedGame(GameType.SAVED.type)
 
@@ -107,5 +84,30 @@ object Repository {
     fun getWordByName(gameID: String, name: String): LiveData<WordResult> =
         remoteProvider.getWordByName(gameID, name)
 
-    fun getCurrentUser() = remoteProvider.getCurrentUser()
+    fun getGame(gameID: String= NEW_GAME_ID) {
+        val mWords: MutableList<Word> = mutableListOf()
+        val db = FirebaseFirestore.getInstance()
+        db.collection(gameID)
+            .get()
+            .addOnCompleteListener(OnCompleteListener<QuerySnapshot> { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        println(document.id + " => " + document.data)
+                        mWords.add(document.toObject(Word::class.java))
+                    }
+                    if (mWords.size > 0) {
+                        currentGame = Game(
+                            id = GameType.NEW.type,
+                            list = mWords,
+                            numOfWords = NUM_OF_WORDS_IN_NEW_GAME
+                        )
+                        gameLiveData.value = currentGame
+                        gameIsReady = true
+                    }
+                } else {
+                    Log.w("TAG", "Error getting documents.", task.exception)
+                }
+            })
+    }
+
 }

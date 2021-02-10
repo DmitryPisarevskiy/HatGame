@@ -10,5 +10,4 @@ interface RemoteDataProvider {
     fun subscribeToSavedGame(gameID: String): LiveData<WordResult>
     fun getWordByName(gameID: String, name:String) : LiveData<WordResult>
     fun saveWord(gameID: String, word: Word):LiveData<WordResult>
-    fun getCurrentUser(): LiveData<User?>
 }

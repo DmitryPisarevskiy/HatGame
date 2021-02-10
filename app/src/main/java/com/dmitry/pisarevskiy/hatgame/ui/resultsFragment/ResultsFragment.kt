@@ -35,7 +35,7 @@ class ResultsFragment : BaseFragment<ResultsViewState>() {
         fun newInstance() = ResultsFragment()
     }
 
-    override fun renderData(state: ResultsViewState) {
+    override fun renderState(state: ResultsViewState) {
         tvResults.text = getString(R.string.game_results, state.guessedWords, state.playedWords)
     }
 }

@@ -43,6 +43,6 @@ class MainFragment : BaseFragment<MainViewState>() {
         fun newInstance() = MainFragment()
     }
 
-    override fun renderData(state: MainViewState) {
+    override fun renderState(state: MainViewState) {
     }
 }

@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.dmitry.pisarevskiy.hatgame.R
+import com.dmitry.pisarevskiy.hatgame.data.NEW_GAME_ID
 import com.dmitry.pisarevskiy.hatgame.data.model.GameType
 import com.dmitry.pisarevskiy.hatgame.ui.base.BaseFragment
 import com.dmitry.pisarevskiy.hatgame.ui.resultsFragment.ResultsFragment
@@ -16,7 +17,7 @@ const val GAME_FRAGMENT_TYPE_OF_GAME = "new or saved game?"
 
 class GameFragment : BaseFragment<GameViewState>() {
     private lateinit var gameType: String
-    override  val viewModel: GameViewModel by lazy {
+    override val viewModel: GameViewModel by lazy {
         ViewModelProvider(this).get(GameViewModel::class.java)
     }
     private lateinit var tvWord: TextView
@@ -38,7 +39,9 @@ class GameFragment : BaseFragment<GameViewState>() {
         tvWord = view.findViewById(R.id.tv_word)
 
         if (gameType == GameType.NEW.type) {
-            viewModel.changeGameModeToNew()
+            viewModel.getGame(NEW_GAME_ID)
+        } else {
+            viewModel.getGame("SAVED")
         }
 
         btnGuessed.setOnClickListener {
@@ -62,10 +65,13 @@ class GameFragment : BaseFragment<GameViewState>() {
             }
     }
 
-    override fun renderData(state: GameViewState) {
-        if (state.gameIsOver) fragmentManager?.beginTransaction()
-            ?.replace(R.id.mainFrame, ResultsFragment.newInstance())
-            ?.commitNow()
-        tvWord.text = state.currentWord
+    override fun renderState(state: GameViewState) {
+        if (state.gameIsOver) {
+            fragmentManager?.beginTransaction()
+                ?.replace(R.id.mainFrame, ResultsFragment.newInstance())
+                ?.commitNow()
+        } else if (state.gameIsReady) {
+            tvWord.text = state.currentWord
+        }
     }
 }

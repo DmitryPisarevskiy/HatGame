@@ -13,14 +13,14 @@ class Game(val id: String, var list: MutableList<Word>, val numOfWords: Int = li
     }
 
     fun nextWord(currentWordIsGuessed: Boolean) {
-        currentWord.isPlayed = true
+        currentWord.played = true
         numOfPlayedWords++
         if (currentWordIsGuessed) {
-            currentWord.isGuessed = true
+            currentWord.guessed = true
             guessedWords++
         }
 
-        if (numOfPlayedWords != numOfWords) {
+        if (numOfPlayedWords < numOfWords) {
             currentWord = iterator.next()
         } else {
             isOver = true
