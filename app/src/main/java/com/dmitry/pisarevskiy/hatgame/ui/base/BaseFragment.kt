@@ -12,11 +12,11 @@ abstract class BaseFragment<S : BaseViewState> : Fragment() {
         viewModel.viewState()
             .observe(this) { t ->
                 t?.let {
-                    renderData(t)
+                    renderState(t)
                 }
             }
     }
 
-    abstract fun renderData(state: S)
+    abstract fun renderState(state: S)
 
 }
